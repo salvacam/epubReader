@@ -19,6 +19,7 @@ var app = {
 
 	  	app.clearNotes.addEventListener('click', () => {
 	  		app.modalClear.classList.remove('hide');
+        app.note.blur();
 
   			document.getElementById('okClear').addEventListener('click', () => {
 				  app.modalClear.classList.add('hide');
