@@ -20,19 +20,20 @@ var app = {
 	  	app.clearNotes.addEventListener('click', () => {
 	  		app.modalClear.classList.remove('hide');
 
-
-  			document.getElementById('okClear').addEventListener('click', () => {  				
-				app.modalClear.classList.add('hide');
+  			document.getElementById('okClear').addEventListener('click', () => {
+				  app.modalClear.classList.add('hide');
 		    	app.note.value = '';
 		    	localStorage.setItem("_note", '');
-				document.getElementById('okClear').removeEventListener('click', ()=> {});
-  			});
-  			document.getElementById('closeClear').addEventListener('click', () => {  				
-				app.modalClear.classList.add('hide');
-				document.getElementById('closeClear').removeEventListener('click', ()=> {});
+          app.note.focus();
+				  document.getElementById('okClear').removeEventListener('click', ()=> {});
   			});
 
-		    app.note.focus();
+  			document.getElementById('closeClear').addEventListener('click', () => {  				
+				  app.modalClear.classList.add('hide');
+          app.note.focus();
+				  document.getElementById('closeClear').removeEventListener('click', ()=> {});
+  			});
+
 
 		    
 		});
