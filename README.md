@@ -1,6 +1,6 @@
-<h3>Interval Timer</h3>
+<h3>Notepad</h3>
 <hr/>
 
-Temporizador con cuenta atrás para controlar intervalos y lapsos de tiempo en tus entrenamientos
+Bloc de notas PWA
 
-<a href="https://salvacam.github.io/intervalTimer" target="_blank">Interval Timer</a>
+<a href="https://salvacam.github.io/notepad" target="_blank">Notepad</a>
