@@ -17,7 +17,9 @@ var app = {
     		app.note.value = noteItem;
   		}
 
-	  	app.clearNotes.addEventListener('click', () => {
+	  	app.clearNotes.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
 	  		app.modalClear.classList.remove('hide');
         app.note.blur();
 
