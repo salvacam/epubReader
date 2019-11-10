@@ -1,7 +1,7 @@
 {
   "lang": "en",
-  "name": "Notepad",
-  "short_name": "Notepad",
+  "name": "Epub reader",
+  "short_name": "Epub reader",
   "icons": [{
         "src": "img/icon-48x48.png",
         "sizes": "48x48",

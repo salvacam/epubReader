@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 	<meta charset="UTF-8">
-	<title>Notepad</title>
+	<title>Epub Reader</title>
 
 	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=5" />
 
@@ -13,26 +13,36 @@
 	<link rel="icon" href="img/icon.png">
 
   	<style type="text/css">
-  	html{width:100%;height:100%}
-body{font-family:Helvetica;font-size:16px;min-width:240px;height:100%;background:0;border-radius:0;font:16px sans-serif;margin:0}
-header{display:flex;justify-content:space-around;background-color:#ccc;border-bottom:1px solid #666}
-header h3{width:200px;margin:0;font-size:20px;font-weight:700;padding:0;padding-top:5px}
-header h3 img{margin-right:15px}
-.container{margin:0 20px;margin-top:5px;width:auto;height:calc(100% - 65px);text-align:center}
-.btn{	border-radius:6px;border:0;background-color:#00F;color:#FFF;cursor:pointer;display:inline-block;margin:2px 0;text-decoration:none;outline:0;padding:10px;font-size:14px}
-.modalClear{display:flex;flex-direction:column;justify-content:center;align-items:center;position:fixed;width:100%;height:100%;background:grey;color:#FFF;font-size:24px}
-.modalClear .closeClear,.modalClear .okClear{height:20px;margin-top:10px;font-size:20px;background-color:#00F;color:#FFF;padding:10px;border-radius:10px;opacity:1;text-align:center}
-.modalClear .clearText{color:#000;opacity:1;background:#d3d3d3;padding:10px;border-radius:10px}
-.modalClear .buttonDiv{display:inline-flex;justify-content:space-between;min-width:100px}
-textarea:hover,textarea{width:100%;height:100%;font-size:18px;outline:none;box-shadow:none;-webkit-box-shadow:none;-moz-box-shadow:none;outline:0!important;-webkit-appearance:none;resize:none;background:0;border-radius:0;margin:0}
-.labelHide{height:0;width:0;overflow:hidden;display:block;}
-.hide{display:none}
+	  	html{width:100%;height:100%}body{font-family:Helvetica;font-size:16px;min-width:240px;height:100%;background:0;border-radius:0;font:16px sans-serif;margin:0}
+		header{display:flex;justify-content:space-around;background-color:#ccc;border-bottom:1px solid #666}
+		header > div {display:inline-flex;justify-content:space-between;width:200px;align-items:center;}
+		header h3{margin:0;font-size:20px;font-weight:700;padding:0;padding-top:5px}
+		header h3 img{margin-right:15px}
+		.modalClear{display:flex;flex-direction:column;justify-content:center;align-items:center;position:fixed;top:0;width:100%;height:100%;background:grey;color:#FFF;font-size:24px}
+		.modalClear .clearText {display:flex;flex-direction:column;align-items:center;color:#000;opacity:1;background:#d3d3d3;padding:10px;border-radius:10px}
+		.lineConfig{width:100%;display:flex;justify-content:center;align-items:center;margin:5px;border-bottom:1px solid black;}
+		.lineConfig.double{width:100%;display:flex;justify-content:center;align-items:center;margin:5px;border-bottom:1px solid black;}
+		.buttonSimple{width:150px;display:flex;}.buttonDouble{width:150px;display:flex;flex-wrap:wrap;}
+		.configFont,.normalConfig{font-size:20px;}.buttonConfig.normalConfig{margin-right:20px;}.closeConfig{text-decoration: none;}
+		.buttonConfig{border:1px solid black;border-radius:5px;margin:5px;padding:3px;padding-left:10px;padding-right:10px;cursor:pointer;}
+		.buttonConfig.select{color:#d3d3d3;background:#000;}.titleConfig{margin-right:10px; width:150px;text-align: end;}
+		textarea:hover,textarea{width:100%;height:100%;font-size:18px;outline:none;box-shadow:none;-webkit-box-shadow:none;-moz-box-shadow:none;outline:0!important;-webkit-appearance:none;resize:none;background:0;border-radius:0;margin:0}
+		.labelHide{height:0;width:0;overflow:hidden;display:block;}.hide{display:none}
+		.arrow{position:fixed;top:95%;margin-top:-32px;font-size:64px;color:#E2E2E2;font-family:arial,sans-serif;font-weight:bold;cursor:pointer;-webkit-user-select:none;-moz-user-select:none;user-select:none;text-decoration:none;}
+		.arrow.addBook {top:25px;right: 0;font-size: 35px;color: #777;}
+		#backButton {top: 20px;}#nextButton {right: 0;}#configButton {right: 0;top: 20px;font-size: 52px;}
+		#prevButton {left: 0;}.arrow.count {font-size: 52px;font-size: 25px;left: 40%;top:100%;}
+		.navlink{margin:14px;display:block;text-align:center;text-decoration:none;color:#ccc;}
+		.arrow:hover, .navlink:hover{color:#777;}.arrow.addBook:hover{color:#E2E2E2;}.arrow:active, .navlink:hover{color:#000;}
   	</style>
+
+	<script type="text/javascript" charset="utf-8" src="js/jszip.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/epub.min.js"></script>
 
     <link rel="manifest" href="./manifest.json">
 
-    <meta name="description" content="Notepad">
-    <meta name="keywords" content="notepad, notes, note, notebook" />
+    <meta name="description" content="Epub Reader">
+    <meta name="keywords" content="epub, ebook, reader, epub reader, ebook reader" />
 
     <meta name="author" content="Salvador Camacho" /> 
 
@@ -40,26 +50,74 @@ textarea:hover,textarea{width:100%;height:100%;font-size:18px;outline:none;box-s
 
 <body>
 
-	<header>
-		<h3>
-			<img src="img/icon.png" alt="icon" height="24">Note 
-		</h3>                    
-		<a id="clearNotes" class="btn">Clear</a>	
+	<header id="header" class="">		
+		<input type="file" class="hide" id="inputFile">
+		<div>
+			<img src="img/icon.png" alt="icon" height="24">
+			<h3>Epub reader</h3>
+		</div>                    
+		<a id="addBook" class="arrow addBook">&#8593;</a>
 	</header>
 
-	<div id="modalClear" class="hide modalClear">
-		<div class="clearText">Are sure?</div>
-		<div class="buttonDiv">
-			<div id="okClear" class="okClear">Ok</div>
-			<div id="closeClear" class="closeClear">X</div>
-		</div>
-	</div>
+	<section id="viewer" class="hide">		
+		<div id="area"></div>
+		<a id="backButton" href="#back" class="arrow" style="visibility: visible;">&#8593;</a>
+		<a id="configButton" href="#configButton" class="arrow" style="visibility: visible;">&#9881;</a>
+	    <a id="prevButton" href="#prev" class="arrow" style="visibility: visible;">&lt;</a>
+	    <div id="" class="arrow count" ><span id="">23</span>/<span id="">244</span></div>
+	    <a id="nextButton" href="#next" class="arrow" style="visibility: visible;">&gt;</a>
+	</section>
 
-    <div class="container principal" id="principalDiv">
-		<textarea id="note" name="note" autofocus=""></textarea>
-		<label for="note" class="labelHide">Texto</label>
-	</div>
-    
+	<section id="config" class="hide modalClear">
+		<div class="clearText">
+			<div class="lineConfig">
+				<a id="closeConfig" href="#next" class="closeConfig">Close</a>
+			</div>
+			<div class="lineConfig">
+				<span class="titleConfig">Theme</span>
+				<div class="buttonSimple">
+					<a id="themeLight" data-config="theme" class="buttonConfig select">&#9788;</a>
+					<a id="themeDark" data-config="theme" class="buttonConfig">&#9790;</a>
+				</div>
+			</div>
+			<div class="lineConfig double">
+				<span class="titleConfig">Font Size</span>
+				<div class="buttonDouble">
+					<a id="normalSize" data-config="size" class="buttonConfig normalConfig select">Normal</a>
+					<a id="minusSize" data-config="size" class="buttonConfig">&#8722;</a>
+					<a id="plusSize" data-config="size" class="buttonConfig">&#43;</a>
+				</div>
+			</div>
+			<div class="lineConfig">
+				<span class="titleConfig">Font</span>
+				<div class="buttonSimple">					
+					<a id="sansFont" data-config="font" class="buttonConfig configFont select">Sans</a>
+					<a id="serifFont" data-config="font" class="buttonConfig configFont">Serif</a>
+				</div>
+			</div>
+			<!--
+			<div class="lineConfig double">
+				<span class="titleConfig">Line Height</span>
+				<div class="buttonDouble">
+					<a id="normalLine" class="buttonConfig normalConfig select">Normal</a>
+					<a id="minusLine" class="buttonConfig">&#8722;</a>
+					<a id="plusLine"  class="buttonConfig">&#43;</a>
+				</div>
+			</div>
+		-->
+		<!--
+			<div class="lineConfig double">
+				<span class="titleConfig">Margin Left/Right</span>				
+				<div class="buttonDouble">
+					<a id="normalMargin" class="buttonConfig normalConfig select">Normal</a>
+					<a id="minusMargin" class="buttonConfig">&#8722;</a>
+					<a id="plusMargin"  class="buttonConfig">&#43;</a>
+				</div>
+			</div>
+		-->
+		</div>		
+	</section>
+
 	<script type="text/javascript" charset="utf-8" src="js/main.js"></script>
 
 </body>

@@ -1,6 +1,6 @@
-<h3>Notepad</h3>
+<h3>Epub reader</h3>
 <hr/>
 
-Bloc de notas PWA
+Epub reader PWA
 
-<a href="https://salvacam.github.io/notepad" target="_blank">Notepad</a>
+<a href="https://salvacam.github.io/epubReader" target="_blank">Epub reader</a>

@@ -1,8 +1,10 @@
-var cacheName = 'notepad-v0.1.02';
+var cacheName = 'epubReader-v0.1.01';
 
 var filesToCache = [
   './',
   './index.html',
+  './js/jszip.min.js',
+  './js/epub.min.js',
   './js/main.js',
   './img/icon.png',
   './img/icon-128x128.png',
@@ -28,7 +30,7 @@ self.addEventListener('activate', function(e) {
   e.waitUntil(
     caches.keys().then(function(keyList) {
       return Promise.all(keyList.map(function(key) {
-        if (key.startsWith('notepad-')){
+        if (key.startsWith('epubReader-')){
           if (key !== cacheName) {
             console.log('[ServiceWorker] Removing old cache', key);
             return caches.delete(key);
