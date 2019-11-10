@@ -15,6 +15,8 @@ var app = {
     closeConfigButton: document.getElementById('closeConfig'),
     inputFile: document.getElementById('inputFile'),
     buttonsConfig: document.querySelectorAll('.buttonConfig'),
+    currentPageElement: document.getElementById('currentPage'),
+    totalPageElement: document.getElementById('totalPage'),
 
     currentPage: 0,
     totalPages: 0,        
@@ -201,6 +203,13 @@ var app = {
       rendition.on('relocated', function(locations) {
         app.currentPage = book.locations.locationFromCfi(locations.start.cfi);
         app.totalPages = book.locations.total;
+
+        if (app.currentPage !== 0) {
+          app.currentPageElement.innerHTML = app.currentPage;
+        }
+        if (app.totalPages !== 0) {
+          app.totalPageElement.innerHTML = app.totalPages;
+        }
         //console.log('Current Page:', app.currentPage); //book.locations.locationFromCfi(locations.start.cfi));
         //console.log('Total Pages:', app.totalPages); //book.locations.total);
         localStorage.setItem('_epubReader_' + book.key() + '-locations', locations.start.cfi);//book.locations.save());
