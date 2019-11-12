@@ -7,6 +7,9 @@ var app = {
     viewer: document.getElementById('viewer'),
     config: document.getElementById('config'),
 
+    area: document.getElementById('area'),
+    toc: document.getElementById('toc'),
+    hideButtons: document.querySelectorAll('.hideButton'),
     nextButton: document.getElementById('nextButton'),
     prevButton: document.getElementById('prevButton'),
     backButton: document.getElementById('backButton'),
@@ -39,10 +42,6 @@ var app = {
     },
 
     changeConfig: function(e) {
-
-
-//debugger;
-
       let configParam = e.target.getAttribute('data-config');
       let configId = e.target.getAttribute('id');
       
@@ -122,6 +121,12 @@ var app = {
 
       app.buttonsConfig.forEach(function(btn) {
         btn.removeEventListener('click', app.changeConfig);
+      });
+    },
+
+    toogleHideButton: function() {
+      app.hideButtons.forEach(function(btn) {
+        btn.classList.toggle('hide');
       });
     },
 
@@ -220,6 +225,7 @@ var app = {
       //TODO leer libro del disco duro
         
         app.inputFile.addEventListener('change',function(e) {
+          app.area.innerHTML = "";
 
 /*
           if(window.FileReader) {
@@ -238,17 +244,18 @@ var app = {
           //TODO check tipo
           //input.type
           //"application/epub+zip"
-
-          var reader = new FileReader();
-          console.log(input);
-          reader.readAsArrayBuffer(input);
-          reader.onload = function(){
-            //debugger;
-            let text = reader.result;
-            app.loadBook(text);
-              
-            //debugger;
-          };
+          if (input !== null && input !== undefined) {           
+            var reader = new FileReader();
+            console.log(input);
+            reader.readAsArrayBuffer(input);
+            reader.onload = function(){
+              //debugger;
+              let text = reader.result;
+              app.loadBook(text);
+                
+              //debugger;
+            }; 
+          }
           //reader.readAsArrayBuffer(input);
           //reader.readAsText(input.files[0]);
           app.inputFile.removeEventListener('change', function(){});
@@ -277,6 +284,10 @@ var app = {
     app.closeConfigButton.addEventListener('click', (e) => {
       app.hideConfig();
       e.preventDefault();
+    });
+
+    app.toc.addEventListener('click', (e) => {
+      app.toogleHideButton();
     });
 
     if(localStorage.getItem('_epubReader_config')) {

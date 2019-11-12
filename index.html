@@ -27,13 +27,18 @@
 		.buttonConfig{border:1px solid black;border-radius:5px;margin:5px;padding:3px;padding-left:10px;padding-right:10px;cursor:pointer;}
 		.buttonConfig.select{color:#d3d3d3;background:#000;}.titleConfig{margin-right:10px; width:150px;text-align: end;}
 		textarea:hover,textarea{width:100%;height:100%;font-size:18px;outline:none;box-shadow:none;-webkit-box-shadow:none;-moz-box-shadow:none;outline:0!important;-webkit-appearance:none;resize:none;background:0;border-radius:0;margin:0}
-		.labelHide{height:0;width:0;overflow:hidden;display:block;}.hide{display:none}
-		.arrow{position:fixed;top:95%;margin-top:-32px;font-size:64px;color:#E2E2E2;font-family:arial,sans-serif;font-weight:bold;cursor:pointer;-webkit-user-select:none;-moz-user-select:none;user-select:none;text-decoration:none;}
+		.labelHide{height:0;width:0;overflow:hidden;display:block;}.hide{display:none}.visibilityHidden{visibility:hidden;}
+		.arrow{position:fixed;top:95%;margin-top:-32px;font-size:40px;color:#E2E2E2;font-family:arial,sans-serif;font-weight:bold;cursor:pointer;-webkit-user-select:none;-moz-user-select:none;user-select:none;text-decoration:none;}
 		.arrow.addBook {top:25px;right: 0;font-size: 35px;color: #777;}
 		#backButton {top: 20px;}#nextButton {right: 0;}#configButton {right: 0;top: 20px;font-size: 52px;}
 		#prevButton {left: 0;}.arrow.count {font-size: 52px;font-size: 25px;left: 40%;top:100%;}
 		.navlink{margin:14px;display:block;text-align:center;text-decoration:none;color:#ccc;}
 		.arrow:hover, .navlink:hover{color:#777;}.arrow.addBook:hover{color:#E2E2E2;}.arrow:active, .navlink:hover{color:#000;}
+		.arrow.nav{top:10%;width:20%;height:95%;display:flex;align-items:center;font-size:64px;}
+    	.arrow.nav.nav_next{justify-content: flex-end;}
+		.arrow.nav span{visibility: hidden;}
+		@media(min-width:720px){.arrow.nav span{visibility: visible;}}
+		.toc{width:60%;height:100%;position:fixed;top:0%;left:20%;}
   	</style>
 
 	<script type="text/javascript" charset="utf-8" src="js/jszip.min.js"></script>
@@ -61,11 +66,12 @@
 
 	<section id="viewer" class="hide">		
 		<div id="area"></div>
-		<a id="backButton" href="#back" class="arrow" style="visibility: visible;">&#8593;</a>
-		<a id="configButton" href="#configButton" class="arrow" style="visibility: visible;">&#9881;</a>
-	    <a id="prevButton" href="#prev" class="arrow" style="visibility: visible;">&lt;</a>
-	    <div id="" class="arrow count" ><span id="currentPage"></span>/<span id="totalPage"></span></div>
-	    <a id="nextButton" href="#next" class="arrow" style="visibility: visible;">&gt;</a>
+		<a id="backButton" href="#back" class="arrow hideButton hide">&#8592;</a>
+		<a id="configButton" href="#configButton" class="arrow hideButton hide">&#9881;</a>
+		<div id="" class="arrow count hideButton hide" ><span id="currentPage"></span>/<span id="totalPage"></span></div>
+	    <a id="prevButton" href="#prev" class="arrow nav"><span>&lt;</span></a>
+	    <div id="toc" class="toc"></div>
+	    <a id="nextButton" href="#next" class="arrow nav nav_next"><span>&gt;<span></a>
 	</section>
 
 	<section id="config" class="hide modalClear">
