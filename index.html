@@ -14,10 +14,8 @@
 
   	<style type="text/css">
 	  	html{width:100%;height:100%}body{font-family:Helvetica;font-size:16px;min-width:240px;height:100%;background:0;border-radius:0;font:16px sans-serif;margin:0}
-		header{display:flex;justify-content:space-around;background-color:#ccc;border-bottom:1px solid #666}
-		header > div {display:inline-flex;justify-content:space-between;width:200px;align-items:center;}
-		header h3{margin:0;font-size:20px;font-weight:700;padding:0;padding-top:5px}
-		header h3 img{margin-right:15px}
+		.header{display:flex;flex-direction:column;justify-content:space-around;align-items:center;padding:20px;font-size:32px;background-color:#ccc;border-bottom:1px solid #666}
+		.header img{margin-left:10px;}
 		.modalClear{display:flex;flex-direction:column;justify-content:center;align-items:center;position:fixed;top:0;width:100%;height:100%;background:grey;color:#FFF;font-size:24px}
 		.modalClear .clearText {display:flex;flex-direction:column;align-items:center;color:#000;opacity:1;background:#d3d3d3;padding:10px;border-radius:10px}
 		.lineConfig{width:100%;display:flex;justify-content:center;align-items:center;margin:5px;border-bottom:1px solid black;}
@@ -30,11 +28,12 @@
 		.labelHide{height:0;width:0;overflow:hidden;display:block;}.hide{display:none}.visibilityHidden{visibility:hidden;}
 		.arrow{position:fixed;top:95%;margin-top:-32px;font-size:40px;color:#E2E2E2;font-family:arial,sans-serif;font-weight:bold;cursor:pointer;-webkit-user-select:none;-moz-user-select:none;user-select:none;text-decoration:none;}
 		.arrow.addBook {top:25px;right: 0;font-size: 35px;color: #777;}
+		.addBook{display:flex;margin:20px;padding:20px;font-size: 20px;color: #777;font-family:arial,sans-serif;font-weight:bold;cursor:pointer;-webkit-user-select:none;-moz-user-select:none;user-select:none;text-decoration:none;}
 		#backButton {top: 20px;}#nextButton {right: 0;}#configButton {right: 0;top: 20px;font-size: 52px;}
 		#prevButton {left: 0;}.arrow.count {font-size: 52px;font-size: 25px;left: 40%;top:100%;}
 		.navlink{margin:14px;display:block;text-align:center;text-decoration:none;color:#ccc;}
-		.arrow:hover, .navlink:hover{color:#777;}.arrow.addBook:hover{color:#E2E2E2;}.arrow:active, .navlink:hover{color:#000;}
-		.arrow.nav{top:10%;width:20%;height:95%;display:flex;align-items:center;font-size:64px;}
+		.navlink:hover{color:#777;} .navlink:hover{color:#000;}
+		.arrow.nav{top:70px;width:20%;height:95%;display:flex;align-items:center;font-size:64px;}
     	.arrow.nav.nav_next{justify-content: flex-end;}
 		.arrow.nav span{visibility: hidden;}
 		@media(min-width:720px){.arrow.nav span{visibility: visible;}}
@@ -55,23 +54,20 @@
 
 <body>
 
-	<header id="header" class="">		
-		<input type="file" class="hide" id="inputFile">
-		<div>
-			<img src="img/icon.png" alt="icon" height="24">
-			<h3>Epub reader</h3>
-		</div>                    
-		<a id="addBook" class="arrow addBook">&#8593;</a>
-	</header>
+	<div id="header" class="header">		
+		<input type="file" class="hide" id="inputFile" accept=".epub, .mobi">
+		<div>Epub reader</div>
+		<span id="addBook" class="addBook">Open epub<img src="img/icon.png" alt="icon" height="24"></span>
+	</div>
 
 	<section id="viewer" class="hide">		
 		<div id="area"></div>
-		<a id="backButton" href="#back" class="arrow hideButton hide">&#8592;</a>
-		<a id="configButton" href="#configButton" class="arrow hideButton hide">&#9881;</a>
+		<span id="backButton" href="#back" class="arrow hideButton hide">&#8592;</span>
+		<span id="configButton" href="#configButton" class="arrow hideButton hide">&#9881;</span>
 		<div id="" class="arrow count hideButton hide" ><span id="currentPage"></span>/<span id="totalPage"></span></div>
-	    <a id="prevButton" href="#prev" class="arrow nav"><span>&lt;</span></a>
+	    <span id="prevButton" href="#prev" class="arrow nav"><span>&lt;</span></span>
 	    <div id="toc" class="toc"></div>
-	    <a id="nextButton" href="#next" class="arrow nav nav_next"><span>&gt;<span></a>
+	    <span id="nextButton" href="#next" class="arrow nav nav_next"><span>&gt;<span></span>
 	</section>
 
 	<section id="config" class="hide modalClear">

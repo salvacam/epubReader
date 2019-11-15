@@ -140,6 +140,13 @@ var app = {
       rendition.themes.fontSize(app.configuration.size+"%");
     },
 
+    getHome: function(text) {
+      //mostrar cabecera
+      app.header.classList.remove('hide');
+      //ocultar area
+      app.viewer.classList.add('hide');
+    },
+
     loadBook: function(text) {
 
       //ocultar cabecera
@@ -151,7 +158,6 @@ var app = {
       book.open(text, "binary");
       var rendition = book.renderTo("area", {flow: "paginated"});
 
-      //render theme
       app.renderTheme(rendition);
 
       book.ready.then(() => {
@@ -227,18 +233,6 @@ var app = {
         app.inputFile.addEventListener('change',function(e) {
           app.area.innerHTML = "";
 
-/*
-          if(window.FileReader) {
-                    var file  = e.target.files[0];
-                    var reader = new FileReader();
-                    reader.readAsDataURL(file);
-                    reader.onload = function (e) {
-                        var image = new Image;
-                        image.src = e.target.result;
-                        image.onload = function() {// Do something}
-                    }
-          }
-*/
           var input = e.target.files[0];
 
           //TODO check tipo
@@ -268,7 +262,7 @@ var app = {
     
     //Get book
     app.backButton.addEventListener('click', (e) => {
-      app.getBook();
+      app.getHome();
       e.preventDefault();
     });      
     app.addBookButton.addEventListener('click', (e) => {
