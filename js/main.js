@@ -29,8 +29,8 @@ var app = {
       "color": "#000",
       "size": "100",
       "font": "Arial, Helvetica, sans-serif",
-      "line-height": "",
-      "margin": "",
+      "line": "100",
+      "margin": "10",
     },
 
     changeSelect: function(configParam, configId) {      
@@ -55,7 +55,6 @@ var app = {
           app.configuration.background = "#fff";
           app.configuration.color = "#000";
         }
-
       } else if (configParam === "font") {
         app.changeSelect(configParam, configId);
 
@@ -64,7 +63,6 @@ var app = {
         } else if (configId === "sansFont") {
           app.configuration.font = "Arial, Helvetica, sans-serif";
         }
-
       } else if (configParam === "size") {
         app.changeSelect(configParam, configId);
 
@@ -77,35 +75,33 @@ var app = {
         } else if (configId === "normalSize") {
           app.configuration.size = "100";
         }
+      } else if (configParam === "line") {
+        app.changeSelect(configParam, configId);
 
+        if (configId === "plusLine") {
+          app.configuration.line = parseInt(app.configuration.line) + 15;
+          app.configuration.line = app.configuration.line > 200 ? 200 : app.configuration.line;
+        } else if (configId === "minusLine") {
+          app.configuration.line = parseInt(app.configuration.line) - 15;
+          app.configuration.line = app.configuration.line < 50 ? 50 : app.configuration.line;
+        } else if (configId === "normalLine") {
+          app.configuration.line = "100";
+        }
+      } else if (configParam === "margin") {
+        app.changeSelect(configParam, configId);
+
+        if (configId === "plusMargin") {
+          app.configuration.margin = parseInt(app.configuration.margin) + 5;
+          app.configuration.margin = app.configuration.margin > 50 ? 50 : app.configuration.margin;
+        } else if (configId === "minusMargin") {
+          app.configuration.margin = parseInt(app.configuration.margin) - 5;
+          app.configuration.margin = app.configuration.margin < -22 ? -22 : app.configuration.margin;
+        } else if (configId === "normalMargin") {
+          app.configuration.margin = "10";
+        }
       }
 
       localStorage.setItem('_epubReader_config', JSON.stringify(app.configuration));
-
-    /*
-    rendition.themes.default({
-      h2: {
-        'font-size': '32px',
-        color: 'purple'
-      },
-      p: {
-        "margin": '10px'
-      }
-    });
-    rendition.themes.select("tan");
-    rendition.themes.fontSize("140%");
-
-
-    
-
-    rendition.themes.register("purple", { "body": { "background": "purple"}, "p":{ "margin-left":"0em !important" } });
-    rendition.themes.select("purple");
-
-    padding-left padding-right
-
-    rendition.themes.register("purple", { "body": { "background": "purple", "line-height":"1em", "padding-left":"1em", "padding-right":"0em"}, "p":{ "margin-left":"0em !important" } });
-    rendition.themes.select("purple");
-      */
     },
 
     showConfig: function() {
@@ -134,7 +130,11 @@ var app = {
       rendition.themes.register("theme", { "body": { 
           "background": app.configuration.background, 
           "color": app.configuration.color,
-          "font-family":app.configuration.font}
+          "font-family":app.configuration.font,
+          "line-height": app.configuration.line + "% !important",
+          "line-height": app.configuration.line + "% !important",},
+          "p" :{ "margin-left": app.configuration.margin + "px !important", 
+                "margin-right": app.configuration.margin + "px !important" }
       });
       rendition.themes.select("theme");
       rendition.themes.fontSize(app.configuration.size+"%");
@@ -169,30 +169,18 @@ var app = {
           rendition.display(localStorage.getItem('_epubReader_' + book.key() + '-locations'));
         }
 
-        app.nextButton.addEventListener("click", function(e){
+        app.nextButton.addEventListener("click", function(e) {
           book.package.metadata.direction === "rtl" ? rendition.prev() : rendition.next();
           e.preventDefault();
         }, false);
 
-        app.prevButton.addEventListener("click", function(e){
+        app.prevButton.addEventListener("click", function(e) {
           book.package.metadata.direction === "rtl" ? rendition.next() : rendition.prev();
           e.preventDefault();
         }, false);
 
-        app.closeConfigButton.addEventListener("click", function(){          
-            //render theme
+        app.closeConfigButton.addEventListener("click", function() {
             app.renderTheme(rendition);
-      /*
-          //Render theme
-          rendition.themes.register("theme", { "body": { 
-            "background": app.configuration.background, 
-            "color": app.configuration.color,
-            "font-family":app.configuration.font}
-          });
-          rendition.themes.select("theme");
-          rendition.themes.fontSize(app.configuration.size+"%");
-*/
-
         }, false);
 
         let keyListener = function(e) {
@@ -221,37 +209,26 @@ var app = {
         if (app.totalPages !== 0) {
           app.totalPageElement.innerHTML = app.totalPages;
         }
-        //console.log('Current Page:', app.currentPage); //book.locations.locationFromCfi(locations.start.cfi));
-        //console.log('Total Pages:', app.totalPages); //book.locations.total);
-        localStorage.setItem('_epubReader_' + book.key() + '-locations', locations.start.cfi);//book.locations.save());
+        localStorage.setItem('_epubReader_' + book.key() + '-locations', locations.start.cfi);
       });
 },
 
-    getBook: function() {
-      //TODO leer libro del disco duro
-        
+    getBook: function() {        
         app.inputFile.addEventListener('change',function(e) {
           app.area.innerHTML = "";
 
           var input = e.target.files[0];
 
-          //TODO check tipo
-          //input.type
-          //"application/epub+zip"
           if (input !== null && input !== undefined) {           
             var reader = new FileReader();
             console.log(input);
             reader.readAsArrayBuffer(input);
             reader.onload = function(){
-              //debugger;
               let text = reader.result;
               app.loadBook(text);
-                
-              //debugger;
             }; 
           }
-          //reader.readAsArrayBuffer(input);
-          //reader.readAsText(input.files[0]);
+
           app.inputFile.removeEventListener('change', function(){});
           app.inputFile.value = "";
     });
@@ -293,6 +270,20 @@ var app = {
         app.changeSelect("size", "plusSize");
       } else if (parseInt(configSave.size) < 100) {
         app.changeSelect("size", "minusSize");
+      }
+      if (parseInt(configSave.line) == 100) {
+        app.changeSelect("line", "normalLine");
+      } else if (parseInt(configSave.line) > 100) {
+        app.changeSelect("line", "plusLine");
+      } else if (parseInt(configSave.line) < 100) {
+        app.changeSelect("line", "minusLine");
+      }
+      if (parseInt(configSave.margin) == 10) {
+        app.changeSelect("margin", "normalMargin");
+      } else if (parseInt(configSave.margin) > 10) {
+        app.changeSelect("margin", "plusMargin");
+      } else if (parseInt(configSave.margin) < 10) {
+        app.changeSelect("margin", "minusMargin");
       }
       if (configSave.color === "#fff") {
         app.changeSelect("theme", "themeDark");
