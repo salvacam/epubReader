@@ -30,11 +30,12 @@
 		#backButton {top: 20px;}#nextButton {right: 0;}#configButton {right: 0;top: 20px;font-size: 52px;}
 		#prevButton {left: 0;}.arrow.count {font-size: 52px;font-size: 25px;left: 40%;top:100%;}
 		.navlink{margin:14px;display:block;text-align:center;text-decoration:none;color:#ccc;}
-		.arrow.nav{top:70px;width:20%;height:95%;display:flex;align-items:center;font-size:64px;}
+		.arrow.nav{top:70px;width:30%;height:95%;display:flex;align-items:center;font-size:64px;}
+		.arrow.nav:hover, .arrow.nav:focus, .arrow.nav:active{background: none;}
     	.arrow.nav.nav_next{justify-content: flex-end;}
 		.arrow.nav span{visibility: hidden;}
 		@media(min-width:720px){.arrow.nav span{visibility: visible;}}
-		.toc{width:60%;height:100%;position:fixed;top:0%;left:20%;}
+		.toc{width:40%;height:100%;position:fixed;top:0%;left:30%;}
   	</style>
 
 	<script type="text/javascript" charset="utf-8" src="js/jszip.min.js"></script>
@@ -62,9 +63,9 @@
 		<span id="backButton" href="#back" class="arrow hideButton hide">&#8592;</span>
 		<span id="configButton" href="#configButton" class="arrow hideButton hide">&#9881;</span>
 		<div id="" class="arrow count hideButton hide" ><span id="currentPage"></span>/<span id="totalPage"></span></div>
-	    <span id="prevButton" href="#prev" class="arrow nav"><span>&lt;</span></span>
+	    <span id="prevButton" class="arrow nav"><span>&lt;</span></span>
 	    <div id="toc" class="toc"></div>
-	    <span id="nextButton" href="#next" class="arrow nav nav_next"><span>&gt;<span></span>
+	    <span id="nextButton" class="arrow nav nav_next"><span>&gt;<span></span>
 	</section>
 
 	<section id="config" class="hide modalClear">
