@@ -21,6 +21,8 @@ var app = {
     currentPageElement: document.getElementById('currentPage'),
     totalPageElement: document.getElementById('totalPage'),
 
+    noSleepVideo: document.getElementById('noSleepVideo'),  
+
     currentPage: 0,
     totalPages: 0,        
 
@@ -145,6 +147,8 @@ var app = {
       app.header.classList.remove('hide');
       //ocultar area
       app.viewer.classList.add('hide');
+
+      app.noSleepVideo.pause();
     },
 
     loadBook: function(text) {
@@ -153,6 +157,8 @@ var app = {
       app.header.classList.add('hide');
       //mostrar area
       app.viewer.classList.remove('hide');
+
+      app.noSleepVideo.play();
 
       var book = ePub();
       book.open(text, "binary");
@@ -221,7 +227,7 @@ var app = {
 
           if (input !== null && input !== undefined) {           
             var reader = new FileReader();
-            console.log(input);
+            //console.log(input);
             reader.readAsArrayBuffer(input);
             reader.onload = function(){
               let text = reader.result;
