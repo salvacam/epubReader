@@ -1,4 +1,4 @@
-var cacheName = 'epubReader-v0.1.05';
+var cacheName = 'epubReader-v0.1.06';
 
 var filesToCache = [
   './',

@@ -173,18 +173,15 @@ var app = {
       app.viewer.classList.remove('hide');
 
       app.wakeLock = null;
-
-      async function activarWakeLock() {
-        try {
-          app.wakeLock = await navigator.wakeLock.request("screen");
-          console.log("Wake Lock activado");
-          
-          app.wakeLock.addEventListener("release", () => {
-            console.log("Wake Lock liberado");
-          });
-        } catch (err) {
-          console.error(`${err.name}, ${err.message}`);
-        }
+      try {
+        app.wakeLock = await navigator.wakeLock.request("screen");
+        console.log("Wake Lock activado");
+        
+        app.wakeLock.addEventListener("release", () => {
+          console.log("Wake Lock liberado");
+        });
+      } catch (err) {
+        console.error(`${err.name}, ${err.message}`);
       }
 
       var book = ePub();
