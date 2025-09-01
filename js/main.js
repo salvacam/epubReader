@@ -6,6 +6,7 @@ var app = {
   	header: document.getElementById('header'),
     viewer: document.getElementById('viewer'),
     config: document.getElementById('config'),
+    chapters: document.getElementById('chapters'),
 
     area: document.getElementById('area'),
     toc: document.getElementById('toc'),
@@ -15,6 +16,8 @@ var app = {
     backButton: document.getElementById('backButton'),
     addBookButton: document.getElementById('addBook'),
     configButton: document.getElementById('configButton'),
+    closeChapter: document.getElementById('closeChapter'),
+    chapterButton: document.getElementById('chapterButton'),
     closeConfigButton: document.getElementById('closeConfig'),
     inputFile: document.getElementById('inputFile'),
     buttonsConfig: document.querySelectorAll('.buttonConfig'),
@@ -122,6 +125,14 @@ var app = {
       });
     },
 
+    showChapter: function() {
+      app.chapters.classList.remove('hide');
+    },
+        
+    hideChapter: function() {
+      app.chapters.classList.add('hide');
+    },
+
     toogleHideButton: function() {
       app.hideButtons.forEach(function(btn) {
         btn.classList.toggle('hide');
@@ -167,6 +178,34 @@ var app = {
       app.renderTheme(rendition);
 
       book.ready.then(() => {
+
+        const toc = book.navigation.toc;
+        const ol = document.createElement("ol");
+        const chapters = document.getElementById("chapters");
+
+        toc.forEach((chapter, index) => {
+          const li = document.createElement("li");
+
+          // Limpiar label (espacios múltiples y saltos de línea)
+          const cleanLabel = chapter.label
+          .trim()
+          .replace(/\s+/g, " ");
+
+          // Crear enlace
+          const a = document.createElement("a");
+          a.textContent = cleanLabel || `Capítulo ${index + 1}`;
+          a.href = "#"; // Evitamos salto real
+          a.addEventListener("click", (e) => {
+            e.preventDefault();
+            // Ir al capítulo dentro del libro
+            book.rendition.display(chapter.href);
+            app.hideChapter();
+          });
+
+          li.appendChild(a);
+          ol.appendChild(li);
+          chapters.appendChild(ol);
+        });
 
         book.locations.generate(1024);
         if (localStorage.getItem('_epubReader_' + book.key() + '-locations') === null) {
@@ -260,6 +299,17 @@ var app = {
 
     app.closeConfigButton.addEventListener('click', (e) => {
       app.hideConfig();
+      e.preventDefault();
+    });
+
+
+    app.chapterButton.addEventListener('click', (e) => {
+      app.showChapter();
+      e.preventDefault();
+    });
+
+    app.closeChapter.addEventListener('click', (e) => {
+      app.hideChapter();
       e.preventDefault();
     });
 

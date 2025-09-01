@@ -29,6 +29,9 @@
 		.arrow.addBook {top:25px;right: 0;font-size: 35px;color: #777;}
 		.addBook{display:flex;margin:20px;padding:20px;font-size: 20px;color: #000;font-family:arial,sans-serif;/*font-weight:bold;*/cursor:pointer;-webkit-user-select:none;-moz-user-select:none;user-select:none;text-decoration:none;}
 		#backButton {top: 20px;}#nextButton {right: 0;}#configButton {right: 0;top: 20px;font-size: 52px;}
+		#chapterButton {right: 0;bottom: 20px;font-size: 52px;z-index: 99;}
+		.modalChapter, .modalClear {z-index: 100;}
+		.modalChapter a { text-decoration:none; color: #000; }
 		#prevButton {left: 0;}.arrow.count {font-size: 52px;font-size: 25px;left: 40%;top:100%;}
 		.navlink{margin:14px;display:block;text-align:center;text-decoration:none;color:#ccc;}
 		.arrow.nav{top:70px;width:30%;height:95%;display:flex;align-items:center;font-size:64px;}
@@ -64,6 +67,7 @@
 		<span id="backButton" href="#back" class="arrow hideButton hide">&#8592;</span>
 		<span id="configButton" href="#configButton" class="arrow hideButton hide">&#9881;</span>
 		<div id="" class="arrow count hideButton hide" ><span id="currentPage"></span>/<span id="totalPage"></span></div>
+		<span id="chapterButton" href="#chapterButton" class="arrow hideButton hide">&#8801;</span>
 	    <span id="prevButton" class="arrow nav"><span>&lt;</span></span>
 	    <div id="toc" class="toc"></div>
 	    <span id="nextButton" class="arrow nav nav_next"><span>&gt;<span></span>
@@ -113,6 +117,11 @@
 				</div>
 			</div>
 		</div>		
+	</section>
+
+
+	<section id="chapters" class="hide modalClear modalChapter">
+		<a id="closeChapter" href="#next" class="closeConfig">Close</a>
 	</section>
 
 	<video id="noSleepVideo" width="320" height="240" autoplay muted playsinline loop class="hide">
