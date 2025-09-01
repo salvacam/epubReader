@@ -165,14 +165,7 @@ var app = {
       }
     },
 
-    loadBook: function(text) {
-
-      //ocultar cabecera
-      app.header.classList.add('hide');
-      //mostrar area
-      app.viewer.classList.remove('hide');
-
-      app.wakeLock = null;
+    activarWakeLock: async function() {
       try {
         app.wakeLock = await navigator.wakeLock.request("screen");
         console.log("Wake Lock activado");
@@ -183,7 +176,18 @@ var app = {
       } catch (err) {
         console.error(`${err.name}, ${err.message}`);
       }
+    },
 
+    loadBook: function(text) {
+
+      //ocultar cabecera
+      app.header.classList.add('hide');
+      //mostrar area
+      app.viewer.classList.remove('hide');
+
+      app.wakeLock = null;
+      app.activarWakeLock();
+      
       var book = ePub();
       book.open(text, "binary");
       var rendition = book.renderTo("area", {flow: "paginated"});
