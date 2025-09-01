@@ -179,20 +179,25 @@ var app = {
 
       book.ready.then(() => {
 
-        const toc = book.navigation.toc;
-        const ol = document.createElement("ol");
-        const chapters = document.getElementById("chapters");
+        let toc = book.navigation.toc;
+        //console.log(toc);
+        let ol = document.createElement("ul");
+        //let ol = document.createElement("ol");
+        //ol.style.overflow = "auto";
+
+        let chaptersList = document.getElementById("chaptersList");
+        chaptersList.innerHTML = "";
 
         toc.forEach((chapter, index) => {
-          const li = document.createElement("li");
+          let li = document.createElement("li");
 
           // Limpiar label (espacios múltiples y saltos de línea)
-          const cleanLabel = chapter.label
+          let cleanLabel = chapter.label
           .trim()
           .replace(/\s+/g, " ");
 
           // Crear enlace
-          const a = document.createElement("a");
+          let a = document.createElement("a");
           a.textContent = cleanLabel || `Capítulo ${index + 1}`;
           a.href = "#"; // Evitamos salto real
           a.addEventListener("click", (e) => {
@@ -204,7 +209,7 @@ var app = {
 
           li.appendChild(a);
           ol.appendChild(li);
-          chapters.appendChild(ol);
+          chaptersList.appendChild(ol);
         });
 
         book.locations.generate(1024);
