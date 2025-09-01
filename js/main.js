@@ -24,7 +24,7 @@ var app = {
     currentPageElement: document.getElementById('currentPage'),
     totalPageElement: document.getElementById('totalPage'),
 
-    noSleepVideo: document.getElementById('noSleepVideo'),  
+    wakeLock: null,
 
     currentPage: 0,
     totalPages: 0,        
@@ -159,7 +159,10 @@ var app = {
       //ocultar area
       app.viewer.classList.add('hide');
 
-      app.noSleepVideo.pause();
+      if (app.wakeLock) {
+        app.wakeLock.release();
+        app.wakeLock = null;
+      }
     },
 
     loadBook: function(text) {
@@ -169,7 +172,20 @@ var app = {
       //mostrar area
       app.viewer.classList.remove('hide');
 
-      app.noSleepVideo.play();
+      app.wakeLock = null;
+
+      async function activarWakeLock() {
+        try {
+          app.wakeLock = await navigator.wakeLock.request("screen");
+          console.log("Wake Lock activado");
+          
+          app.wakeLock.addEventListener("release", () => {
+            console.log("Wake Lock liberado");
+          });
+        } catch (err) {
+          console.error(`${err.name}, ${err.message}`);
+        }
+      }
 
       var book = ePub();
       book.open(text, "binary");
