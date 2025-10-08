@@ -24,6 +24,8 @@ var app = {
     currentPageElement: document.getElementById('currentPage'),
     totalPageElement: document.getElementById('totalPage'),
 
+    book: ePub(),
+
     wakeLock: null,
 
     currentPage: 0,
@@ -189,7 +191,7 @@ var app = {
       a.href = "#"; // Evitamos salto real
       a.addEventListener("click", (e) => {
         e.preventDefault();
-        book.rendition.display(chapter.href);
+        app.book.rendition.display(chapter.href);
         app.hideChapter();
       });
 
@@ -217,15 +219,14 @@ var app = {
       app.wakeLock = null;
       app.activarWakeLock();
       
-      var book = ePub();
-      book.open(text, "binary");
-      var rendition = book.renderTo("area", {flow: "paginated"});
+      app.book.open(text, "binary");
+      var rendition = app.book.renderTo("area", {flow: "paginated"});
 
       app.renderTheme(rendition);
 
-      book.ready.then(() => {
+      app.book.ready.then(() => {
 
-        let toc = book.navigation.toc;
+        let toc = app.book.navigation.toc;
         //console.log(toc);
         let ol = document.createElement("ul");
 
@@ -239,20 +240,20 @@ var app = {
           chaptersList.appendChild(ol);
         });
 
-        book.locations.generate(1024);
-        if (localStorage.getItem('_epubReader_' + book.key() + '-locations') === null) {
+        app.book.locations.generate(1024);
+        if (localStorage.getItem('_epubReader_' + app.book.key() + '-locations') === null) {
           rendition.display();
         } else {
-          rendition.display(localStorage.getItem('_epubReader_' + book.key() + '-locations'));
+          rendition.display(localStorage.getItem('_epubReader_' + app.book.key() + '-locations'));
         }
 
         app.nextButton.addEventListener("click", function(e) {
-          book.package.metadata.direction === "rtl" ? rendition.prev() : rendition.next();
+          app.book.package.metadata.direction === "rtl" ? rendition.prev() : rendition.next();
           e.preventDefault();
         }, false);
 
         app.prevButton.addEventListener("click", function(e) {
-          book.package.metadata.direction === "rtl" ? rendition.next() : rendition.prev();
+          app.book.package.metadata.direction === "rtl" ? rendition.next() : rendition.prev();
           e.preventDefault();
         }, false);
 
@@ -263,12 +264,12 @@ var app = {
         let keyListener = function(e) {
           // Left Key
           if ((e.keyCode || e.which) == 37) {
-            book.package.metadata.direction === "rtl" ? rendition.next() : rendition.prev();
+            app.book.package.metadata.direction === "rtl" ? rendition.next() : rendition.prev();
           }
 
           // Right Key
           if ((e.keyCode || e.which) == 39) {
-            book.package.metadata.direction === "rtl" ? rendition.prev() : rendition.next();
+            app.book.package.metadata.direction === "rtl" ? rendition.prev() : rendition.next();
           }
         };
 
@@ -277,8 +278,8 @@ var app = {
       });
 
       rendition.on('relocated', function(locations) {
-        app.currentPage = book.locations.locationFromCfi(locations.start.cfi);
-        app.totalPages = book.locations.total;
+        app.currentPage = app.book.locations.locationFromCfi(locations.start.cfi);
+        app.totalPages = app.book.locations.total;
 
         if (app.currentPage !== 0) {
           app.currentPageElement.innerHTML = app.currentPage;
@@ -286,7 +287,7 @@ var app = {
         if (app.totalPages !== 0) {
           app.totalPageElement.innerHTML = app.totalPages;
         }
-        localStorage.setItem('_epubReader_' + book.key() + '-locations', locations.start.cfi);
+        localStorage.setItem('_epubReader_' + app.book.key() + '-locations', locations.start.cfi);
       });
 },
 
@@ -383,8 +384,7 @@ var app = {
       } else if (configSave.font === "Arial, Helvetica, sans-serif") {
         app.changeSelect("font", "sansFont");
       }
-    }
-      
+    }      
 
 		if ('serviceWorker' in navigator) {
       		navigator.serviceWorker
