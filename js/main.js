@@ -178,6 +178,35 @@ var app = {
       }
     },
 
+
+    createChapter: function(chapter, li) {
+      // Limpiar label (espacios múltiples y saltos de línea)
+      let cleanLabel = chapter.label.trim().replace(/\s+/g, " ");
+
+      // Crear enlace
+      let a = document.createElement("a");
+      a.textContent = cleanLabel || `Capítulo ${index + 1}`;
+      a.href = "#"; // Evitamos salto real
+      a.addEventListener("click", (e) => {
+        e.preventDefault();
+        book.rendition.display(chapter.href);
+        app.hideChapter();
+      });
+
+      li.appendChild(a);
+
+      if(chapter.subitems != null && chapter.subitems.length > 0) {
+        let olSub = document.createElement("ul");
+        chapter.subitems.forEach((chapter, index) => {              
+          let liSub = document.createElement("li");
+          app.createChapter(chapter,liSub);
+          olSub.appendChild(liSub);
+        });
+
+        li.appendChild(olSub);
+      }
+    },
+
     loadBook: function(text) {
 
       //ocultar cabecera
@@ -199,32 +228,13 @@ var app = {
         let toc = book.navigation.toc;
         //console.log(toc);
         let ol = document.createElement("ul");
-        //let ol = document.createElement("ol");
-        //ol.style.overflow = "auto";
 
         let chaptersList = document.getElementById("chaptersList");
         chaptersList.innerHTML = "";
 
         toc.forEach((chapter, index) => {
           let li = document.createElement("li");
-
-          // Limpiar label (espacios múltiples y saltos de línea)
-          let cleanLabel = chapter.label
-          .trim()
-          .replace(/\s+/g, " ");
-
-          // Crear enlace
-          let a = document.createElement("a");
-          a.textContent = cleanLabel || `Capítulo ${index + 1}`;
-          a.href = "#"; // Evitamos salto real
-          a.addEventListener("click", (e) => {
-            e.preventDefault();
-            // Ir al capítulo dentro del libro
-            book.rendition.display(chapter.href);
-            app.hideChapter();
-          });
-
-          li.appendChild(a);
+          app.createChapter(chapter,li);
           ol.appendChild(li);
           chaptersList.appendChild(ol);
         });
