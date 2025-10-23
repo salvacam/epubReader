@@ -219,6 +219,7 @@ var app = {
       app.wakeLock = null;
       app.activarWakeLock();
       
+      app.book = ePub();
       app.book.open(text, "binary");
       var rendition = app.book.renderTo("area", {flow: "paginated"});
 
